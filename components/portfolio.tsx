@@ -5,12 +5,22 @@ import { ExternalLink } from "lucide-react"
 
 const projects = [
   {
+    title: "Natalia Barragan - FullStack Developer",
+    description:
+      "Mi portfolio personal como programadora. Funciona como un CV interactivo donde exhibo mis proyectos, mi experiencia y mi stack tecnológico (Next.js, NestJS, React, Tailwind).",
+    image: "/natalia-portfolio.png",
+    imageFit: "object-cover object-top",
+    tags: ["Next.js", "React", "Tailwind CSS", "Framer Motion", "Supabase", "Resend"],
+    github: "#",
+    demo: "https://porfolio.nbdigital.lat/",
+  },
+  {
     title: "Coni Perez - Tatuadora",
     description:
       "Desarrollé una aplicación para una tatuadora que incluye un formulario de reservas con notificaciones por mail y un panel de administración (CRM) para gestionar turnos, fotos y estados de citas.",
     image: "/coni-perez-tattoo.png",
     imageFit: "object-cover",
-    tags: ["Next.js", "React", "Tailwind CSS", "Nodemailer", "Supabase"],
+    tags: ["Next.js", "React", "Tailwind CSS", "Supabase", "Resend"],
     github: "#",
     demo: "https://coni-perez.nbdigital.lat/",
   },
@@ -30,7 +40,7 @@ const projects = [
       "Diseñé una presencia digital que refleja su especialización en derecho laboral y su enfoque en la regulación algorítmica y la IA, proyectando una imagen moderna y profesional.",
     image: "/gaston-portfolio.png",
     imageFit: "object-contain bg-slate-950",
-    tags: ["Next.js", "React", "Tailwind CSS", "Framer Motion"],
+    tags: ["Next.js", "React", "Tailwind CSS", "Framer Motion", "Resend"],
     github: "#",
     demo: "https://lopezargonz.nbdigital.lat//",
   },
@@ -39,8 +49,8 @@ const projects = [
     description:
       "Desarrollé una web que resolvió su necesidad real de formalizar su imagen, brindando un espacio confiable para sus clientes.",
     image: "/vgs-estudio-contable.png",
-    imageFit: "object-cover",
-    tags: ["Next.js", "React", "Tailwind CSS"],
+    imageFit: "object-contain bg-slate-900 p-4",
+    tags: ["Next.js", "React", "Tailwind CSS", "Resend", "Google Calendar"],
     github: "#",
     demo: "https://estudiovgs.nbdigital.lat/",
   },
