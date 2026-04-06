@@ -9,7 +9,6 @@ const projects = [
     description:
       "Mi portfolio personal como programadora. Funciona como un CV interactivo donde exhibo mis proyectos, mi experiencia y mi stack tecnológico (Next.js, NestJS, React, Tailwind).",
     image: "/natalia-portfolio.png",
-    imageFit: "object-cover object-top",
     tags: ["Next.js", "React", "Tailwind CSS", "Framer Motion", "Supabase", "Resend"],
     github: "#",
     demo: "https://porfolio.nbdigital.lat/",
@@ -19,7 +18,6 @@ const projects = [
     description:
       "Desarrollé una aplicación para una tatuadora que incluye un formulario de reservas con notificaciones por mail y un panel de administración (CRM) para gestionar turnos, fotos y estados de citas.",
     image: "/coni-perez-tattoo.png",
-    imageFit: "object-cover",
     tags: ["Next.js", "React", "Tailwind CSS", "Supabase", "Resend"],
     github: "#",
     demo: "https://coni-perez.nbdigital.lat/",
@@ -29,7 +27,6 @@ const projects = [
     description:
       "Le desarrollé una landing simple que le permite vender sus cuadros sin comisiones, conectando directamente con sus clientes vía WhatsApp.",
     image: "/coni-perez.png",
-    imageFit: "object-cover",
     tags: ["Next.js", "React", "Tailwind CSS"],
     github: "#",
     demo: "https://coni-cuadros.nbdigital.lat/",
@@ -39,7 +36,7 @@ const projects = [
     description:
       "Diseñé una presencia digital que refleja su especialización en derecho laboral y su enfoque en la regulación algorítmica y la IA, proyectando una imagen moderna y profesional.",
     image: "/gaston-portfolio.png",
-    imageFit: "object-contain bg-slate-950",
+    imageFit: "object-cover object-top",
     tags: ["Next.js", "React", "Tailwind CSS", "Framer Motion", "Resend"],
     github: "#",
     demo: "https://lopezargonz.nbdigital.lat//",
@@ -49,7 +46,6 @@ const projects = [
     description:
       "Desarrollé una web que resolvió su necesidad real de formalizar su imagen, brindando un espacio confiable para sus clientes.",
     image: "/vgs-estudio-contable.png",
-    imageFit: "object-contain bg-slate-900 p-4",
     tags: ["Next.js", "React", "Tailwind CSS", "Resend", "Google Calendar"],
     github: "#",
     demo: "https://estudiovgs.nbdigital.lat/",
@@ -59,7 +55,6 @@ const projects = [
     description:
       "Desarrollo de una aplicación de e-commerce simplificada para un emprendimiento de ropa y accesorios de bebés. Incluye gestión de carrito, selección de talles y pedidos directos vía WhatsApp para una gestión personalizada del stock y pagos.",
     image: "/Yhabiaunavez.png",
-    imageFit: "object-cover",
     tags: ["Next.js", "NestJS", "Supabase", "Tailwind CSS"],
     github: "#",
     demo: "https://yhabiaunavez.nbdigital.lat/",
@@ -69,7 +64,6 @@ const projects = [
     description:
       "Proyecto diseñado para transmitir seguridad, seriedad y confianza, reflejando la excelencia en salud integral de la mujer.",
     image: "/ginecologia-regenerativa.png",
-    imageFit: "object-cover",
     tags: ["Next.js", "React", "Tailwind CSS"],
     github: "#",
     demo: "https://ginecologia-regenerativa.nbdigital.lat/",
@@ -88,7 +82,7 @@ const fadeUp: any = {
 export default function Portfolio() {
   return (
     <section id="portafolio" className="py-24 bg-secondary">
-      <div className="max-w-6xl mx-auto px-6">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -116,15 +110,15 @@ export default function Portfolio() {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
-              className="group relative bg-white rounded-3xl border border-border overflow-hidden flex flex-col hover:shadow-2xl hover:shadow-primary/5 hover:-translate-y-2 transition-all duration-500"
+              className="group relative bg-white rounded-xl border-2 border-slate-200 shadow-xl overflow-hidden flex flex-col hover:shadow-2xl hover:border-primary/50 hover:-translate-y-2 transition-all duration-500"
             >
               {/* Image Preview */}
-              <div className="relative h-56 bg-slate-100 overflow-hidden">
+              <div className="relative aspect-video w-full bg-slate-100 overflow-hidden border-b-2 border-slate-200">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={p.image}
                   alt={p.title}
-                  className={`w-full h-full transition-transform duration-700 group-hover:scale-110 ${p.imageFit}`}
+                  className={`w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 ${p.imageFit || "object-top"}`}
                 />
                 <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm flex items-center justify-center">
                   <a
