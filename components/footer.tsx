@@ -54,7 +54,6 @@ export default function Footer() {
           <div className="flex flex-col gap-3">
             <p className="text-xs font-bold uppercase tracking-widest text-background/40 mb-1">Contacto</p>
             <p className="text-sm text-background/60">natalia.barragannb@gmail.com</p>
-            <p className="text-sm text-background/60">WhatsApp · Argentina</p>
             <p className="text-sm text-background/60">Trabajo 100% remoto</p>
           </div>
         </div>
