@@ -5,8 +5,8 @@ import { motion } from "framer-motion"
 import { Send, Loader2 } from "lucide-react"
 
 export default function Contact() {
-  const [form, setForm] = useState({ nombre: "", rubro: "", mensaje: "" })
-  const [status, setStatus] = useState<"idle" | "sending" | "sent">("idle")
+  const [form, setForm] = useState({ nombre: "", email: "", rubro: "", mensaje: "" })
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle")
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }))
@@ -15,9 +15,23 @@ export default function Contact() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setStatus("sending")
-    // Simulate submission
-    await new Promise((r) => setTimeout(r, 1200))
-    setStatus("sent")
+
+    try {
+      const response = await fetch("/api/send", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      })
+
+      if (response.ok) {
+        setStatus("sent")
+      } else {
+        setStatus("error")
+      }
+    } catch (error) {
+      console.error("Error al enviar el formulario:", error)
+      setStatus("error")
+    }
   }
 
   return (
@@ -87,41 +101,57 @@ export default function Contact() {
           transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
         >
           {status === "sent" ? (
-            <div className="bg-white rounded-2xl border border-border p-10 flex flex-col items-center gap-4 text-center">
-              <div className="w-14 h-14 rounded-full brand-gradient flex items-center justify-center">
-                <Send className="w-6 h-6 text-white" />
+            <div className="bg-white rounded-2xl border border-border p-10 flex flex-col items-center gap-4 text-center shadow-xl shadow-primary/5">
+              <div className="w-16 h-16 rounded-full brand-gradient flex items-center justify-center shadow-lg shadow-primary/20 mb-2">
+                <Send className="w-8 h-8 text-white" />
               </div>
-              <h3 className="text-xl font-bold text-foreground">¡Mensaje enviado!</h3>
-              <p className="text-muted-foreground text-sm">
-                Gracias por escribirnos. Te contactamos dentro de las próximas 24 horas.
+              <h3 className="text-2xl font-bold text-foreground tracking-tight">¡Mensaje enviado!</h3>
+              <p className="text-muted-foreground text-sm max-w-[280px] mx-auto">
+                Gracias por escribirnos. Te contactaremos dentro de las próximas 24 horas al mail indicado.
               </p>
             </div>
           ) : (
             <form
               onSubmit={handleSubmit}
-              className="bg-white rounded-2xl border border-border p-8 flex flex-col gap-5"
+              className="bg-white rounded-3xl border border-border p-8 md:p-10 flex flex-col gap-6 shadow-2xl shadow-primary/5"
             >
-              {/* Nombre */}
-              <div className="flex flex-col gap-1.5">
-                <label htmlFor="nombre" className="text-sm font-semibold text-foreground">
-                  Nombre
-                </label>
-                <input
-                  id="nombre"
-                  name="nombre"
-                  type="text"
-                  required
-                  value={form.nombre}
-                  onChange={handleChange}
-                  placeholder="Ej: Martín García"
-                  className="w-full rounded-xl border border-input bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 transition"
-                />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="flex flex-col gap-2">
+                  <label htmlFor="nombre" className="text-xs font-bold uppercase tracking-wider text-muted-foreground ml-1">
+                    Nombre
+                  </label>
+                  <input
+                    id="nombre"
+                    name="nombre"
+                    type="text"
+                    required
+                    value={form.nombre}
+                    onChange={handleChange}
+                    placeholder="Ej: Martín García"
+                    className="w-full rounded-2xl border border-input bg-background/50 px-5 py-4 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all shadow-sm"
+                  />
+                </div>
+
+                <div className="flex flex-col gap-2">
+                  <label htmlFor="email" className="text-xs font-bold uppercase tracking-wider text-muted-foreground ml-1">
+                    Tu Email
+                  </label>
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    required
+                    value={form.email}
+                    onChange={handleChange}
+                    placeholder="martin@ejemplo.com"
+                    className="w-full rounded-2xl border border-input bg-background/50 px-5 py-4 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all shadow-sm"
+                  />
+                </div>
               </div>
 
-              {/* Rubro */}
-              <div className="flex flex-col gap-1.5">
-                <label htmlFor="rubro" className="text-sm font-semibold text-foreground">
-                  Rubro
+              <div className="flex flex-col gap-2">
+                <label htmlFor="rubro" className="text-xs font-bold uppercase tracking-wider text-muted-foreground ml-1">
+                  Rubro del Proyecto
                 </label>
                 <select
                   id="rubro"
@@ -129,24 +159,21 @@ export default function Contact() {
                   required
                   value={form.rubro}
                   onChange={handleChange}
-                  className="w-full rounded-xl border border-input bg-background px-4 py-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 transition"
+                  className="w-full rounded-2xl border border-input bg-background/50 px-5 py-4 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all shadow-sm cursor-pointer appearance-none"
                 >
-                  <option value="" disabled>
-                    Seleccioná tu rubro
-                  </option>
+                  <option value="" disabled>Seleccioná tu rubro</option>
                   <option>Estudio Contable</option>
-                  <option>Consultorio Médico</option>
+                  <option>Consultorio / Salud</option>
                   <option>Abogado / Estudio Jurídico</option>
                   <option>E-commerce / Tienda Online</option>
                   <option>Portafolio Personal</option>
-                  <option>Otro</option>
+                  <option>Emprendimiento / Otro</option>
                 </select>
               </div>
 
-              {/* Mensaje */}
-              <div className="flex flex-col gap-1.5">
-                <label htmlFor="mensaje" className="text-sm font-semibold text-foreground">
-                  Mensaje
+              <div className="flex flex-col gap-2">
+                <label htmlFor="mensaje" className="text-xs font-bold uppercase tracking-wider text-muted-foreground ml-1">
+                  ¿Cómo podemos ayudarte?
                 </label>
                 <textarea
                   id="mensaje"
@@ -155,23 +182,29 @@ export default function Contact() {
                   rows={4}
                   value={form.mensaje}
                   onChange={handleChange}
-                  placeholder="Contanos qué necesitás, tenés alguna referencia visual, o cualquier detalle que quieras agregar..."
-                  className="w-full rounded-xl border border-input bg-background px-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 transition resize-none"
+                  placeholder="Contanos tu idea o cualquier detalle..."
+                  className="w-full rounded-2xl border border-input bg-background/50 px-5 py-4 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all shadow-sm resize-none"
                 />
               </div>
+
+              {status === "error" && (
+                <p className="text-xs text-rose-500 font-semibold bg-rose-50 p-3 rounded-lg border border-rose-100 italic">
+                  ⚠ Hubo un error al enviar. Por favor contactanos por WhatsApp para una respuesta inmediata.
+                </p>
+              )}
 
               <button
                 type="submit"
                 disabled={status === "sending"}
-                className="w-full inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-semibold text-sm text-white brand-gradient hover:opacity-90 transition-opacity disabled:opacity-60"
+                className="w-full inline-flex items-center justify-center gap-3 px-8 py-4.5 rounded-2xl font-bold text-sm text-white brand-gradient hover:shadow-xl hover:shadow-primary/20 hover:scale-[0.98] active:scale-[0.96] transition-all disabled:opacity-60 disabled:pointer-events-none"
               >
                 {status === "sending" ? (
                   <>
-                    <Loader2 className="w-4 h-4 animate-spin" /> Enviando...
+                    <Loader2 className="w-5 h-5 animate-spin" /> ENVIANDO...
                   </>
                 ) : (
                   <>
-                    <Send className="w-4 h-4" /> Enviar mensaje
+                    <Send className="w-5 h-5" /> ENVIAR MENSAJE
                   </>
                 )}
               </button>

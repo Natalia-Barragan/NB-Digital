@@ -5,35 +5,68 @@ import { ExternalLink } from "lucide-react"
 
 const projects = [
   {
-    name: "VGS Estudio Contable",
-    category: "Estudio Contable",
+    title: "Coni Perez - Tatuadora",
     description:
-      "Sitio profesional con turnos online, integración Google Calendar y formularios de consulta automatizados.",
-    tags: ["Google Calendar", "Turnos Online", "SEO Local"],
-    color: "from-violet-500/10 to-indigo-500/10",
-    accent: "bg-violet-100 text-violet-700",
+      "Desarrollé una aplicación para una tatuadora que incluye un formulario de reservas con notificaciones por mail y un panel de administración (CRM) para gestionar turnos, fotos y estados de citas.",
+    image: "/coni-perez-tattoo.png",
+    imageFit: "object-cover",
+    tags: ["Next.js", "React", "Tailwind CSS", "Nodemailer", "Supabase"],
+    github: "#",
+    demo: "https://coni-perez.nbdigital.lat/",
   },
   {
-    name: "Coni Cuadros",
-    category: "Portafolio Personal",
+    title: "Coni Perez - Artista Plástica",
     description:
-      "Portafolio de artista con galería dinámica, cargas ultrarrápidas y presencia visual de alto impacto.",
-    tags: ["Galería Dinámica", "Alta Velocidad", "Branding"],
-    color: "from-pink-500/10 to-rose-500/10",
-    accent: "bg-pink-100 text-pink-700",
+      "Le desarrollé una landing simple que le permite vender sus cuadros sin comisiones, conectando directamente con sus clientes vía WhatsApp.",
+    image: "/coni-perez.png",
+    imageFit: "object-cover",
+    tags: ["Next.js", "React", "Tailwind CSS"],
+    github: "#",
+    demo: "https://coni-cuadros.nbdigital.lat/",
   },
   {
-    name: "Había una vez",
-    category: "E-commerce",
+    title: "Gastón López Argonz - Portfolio",
     description:
-      "Tienda online con gestión de stock, notificaciones por WhatsApp y panel de administración propio.",
-    tags: ["Stock", "WhatsApp", "Panel Admin"],
-    color: "from-cyan-500/10 to-blue-500/10",
-    accent: "bg-cyan-100 text-cyan-700",
+      "Diseñé una presencia digital que refleja su especialización en derecho laboral y su enfoque en la regulación algorítmica y la IA, proyectando una imagen moderna y profesional.",
+    image: "/gaston-portfolio.png",
+    imageFit: "object-contain bg-slate-950",
+    tags: ["Next.js", "React", "Tailwind CSS", "Framer Motion"],
+    github: "#",
+    demo: "https://lopezargonz.nbdigital.lat//",
+  },
+  {
+    title: "VGS - Estudio Contable",
+    description:
+      "Desarrollé una web que resolvió su necesidad real de formalizar su imagen, brindando un espacio confiable para sus clientes.",
+    image: "/vgs-estudio-contable.png",
+    imageFit: "object-cover",
+    tags: ["Next.js", "React", "Tailwind CSS"],
+    github: "#",
+    demo: "https://estudiovgs.nbdigital.lat/",
+  },
+  {
+    title: "Yhabiaunavez",
+    description:
+      "Desarrollo de una aplicación de e-commerce simplificada para un emprendimiento de ropa y accesorios de bebés. Incluye gestión de carrito, selección de talles y pedidos directos vía WhatsApp para una gestión personalizada del stock y pagos.",
+    image: "/Yhabiaunavez.png",
+    imageFit: "object-cover",
+    tags: ["Next.js", "NestJS", "Supabase", "Tailwind CSS"],
+    github: "#",
+    demo: "https://yhabiaunavez.nbdigital.lat/",
+  },
+  {
+    title: "Ginecología Regenerativa",
+    description:
+      "Proyecto diseñado para transmitir seguridad, seriedad y confianza, reflejando la excelencia en salud integral de la mujer.",
+    image: "/ginecologia-regenerativa.png",
+    imageFit: "object-cover",
+    tags: ["Next.js", "React", "Tailwind CSS"],
+    github: "#",
+    demo: "https://ginecologia-regenerativa.nbdigital.lat/",
   },
 ]
 
-const fadeUp = {
+const fadeUp: any = {
   hidden: { opacity: 0, y: 28 },
   visible: (i: number) => ({
     opacity: 1,
@@ -64,36 +97,50 @@ export default function Portfolio() {
         </motion.div>
 
         {/* Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {projects.map((p, i) => (
             <motion.article
-              key={p.name}
+              key={p.title}
               custom={i}
               variants={fadeUp}
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
-              className="group relative bg-white rounded-2xl border border-border overflow-hidden flex flex-col hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
+              className="group relative bg-white rounded-3xl border border-border overflow-hidden flex flex-col hover:shadow-2xl hover:shadow-primary/5 hover:-translate-y-2 transition-all duration-500"
             >
-              {/* Colored top banner */}
-              <div className={`h-32 bg-gradient-to-br ${p.color} flex items-center justify-center`}>
-                <span className="text-4xl font-black brand-text-gradient opacity-20 select-none">
-                  {p.name.slice(0, 2).toUpperCase()}
-                </span>
+              {/* Image Preview */}
+              <div className="relative h-56 bg-slate-100 overflow-hidden">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={p.image}
+                  alt={p.title}
+                  className={`w-full h-full transition-transform duration-700 group-hover:scale-110 ${p.imageFit}`}
+                />
+                <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity backdrop-blur-sm flex items-center justify-center">
+                  <a
+                    href={p.demo}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bg-white text-primary font-bold px-6 py-2 rounded-full shadow-lg flex items-center gap-2 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300"
+                  >
+                    Ver Proyecto <ExternalLink className="w-4 h-4" />
+                  </a>
+                </div>
               </div>
 
-              <div className="p-6 flex flex-col gap-3 flex-1">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
-                    {p.category}
-                  </span>
-                  <ExternalLink className="w-4 h-4 text-muted-foreground/40 group-hover:text-primary transition-colors" />
-                </div>
-                <h3 className="text-lg font-bold text-foreground">{p.name}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed flex-1">{p.description}</p>
-                <div className="flex flex-wrap gap-2 mt-2">
+              <div className="p-8 flex flex-col gap-4 flex-1">
+                <h3 className="text-xl font-bold text-foreground tracking-tight group-hover:text-primary transition-colors">
+                  {p.title}
+                </h3>
+                <p className="text-sm text-muted-foreground leading-relaxed flex-1 line-clamp-3">
+                  {p.description}
+                </p>
+                <div className="flex flex-wrap gap-2 pt-2">
                   {p.tags.map((t) => (
-                    <span key={t} className={`text-xs font-medium px-2.5 py-1 rounded-full ${p.accent}`}>
+                    <span
+                      key={t}
+                      className="text-[10px] font-bold px-2.5 py-1 rounded-full border border-primary/20 bg-primary/5 text-primary/70"
+                    >
                       {t}
                     </span>
                   ))}

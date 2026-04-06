@@ -19,6 +19,11 @@ export const metadata: Metadata = {
     description: 'Desarrollo web a medida para que ganes tiempo y profesionalices tu marca.',
     type: 'website',
   },
+  icons: {
+    icon: '/icon.png?v=2',
+    shortcut: '/icon.png?v=2',
+    apple: '/icon.png?v=2',
+  },
 }
 
 export default function RootLayout({
@@ -27,8 +32,8 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="es-AR">
-      <body className={`${inter.variable} font-sans antialiased`}>
+    <html lang="es-AR" suppressHydrationWarning>
+      <body className={`${inter.variable} font-sans antialiased`} suppressHydrationWarning>
         {children}
         <Analytics />
       </body>

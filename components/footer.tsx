@@ -1,4 +1,4 @@
-import { Github, Linkedin, Twitter } from "lucide-react"
+import { Github, Linkedin, Twitter, Instagram } from "lucide-react"
 
 export default function Footer() {
   return (
@@ -21,9 +21,8 @@ export default function Footer() {
             </p>
             <div className="flex items-center gap-3 mt-1">
               {[
-                { Icon: Github, href: "#", label: "GitHub" },
-                { Icon: Linkedin, href: "#", label: "LinkedIn" },
-                { Icon: Twitter, href: "#", label: "Twitter" },
+                { Icon: Linkedin, href: "linkedin.com/in/nbarragandev", label: "LinkedIn" },
+                { Icon: Instagram, href: "https://www.instagram.com/nbdigital_lat/", label: "Instagram" },
               ].map(({ Icon, href, label }) => (
                 <a
                   key={label}
@@ -54,7 +53,7 @@ export default function Footer() {
           {/* Contact */}
           <div className="flex flex-col gap-3">
             <p className="text-xs font-bold uppercase tracking-widest text-background/40 mb-1">Contacto</p>
-            <p className="text-sm text-background/60">hola@nbdigital.ar</p>
+            <p className="text-sm text-background/60">natalia.barragannb@gmail.com</p>
             <p className="text-sm text-background/60">WhatsApp · Argentina</p>
             <p className="text-sm text-background/60">Trabajo 100% remoto</p>
           </div>

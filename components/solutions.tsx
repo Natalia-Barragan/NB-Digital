@@ -48,7 +48,8 @@ const solutions = [
       "Control de stock en tiempo real",
       "Notificaciones por WhatsApp y Email",
       "Panel de gestión de pedidos",
-      "Integración con MercadoPago",
+      "Checkout con pedido directo a WhatsApp",
+      "Cobros a convenir (Transferencia / Efectivo / Link de pagos)"
     ],
     color: "border-cyan-200 bg-cyan-50/50",
     iconColor: "text-cyan-600 bg-cyan-100",
