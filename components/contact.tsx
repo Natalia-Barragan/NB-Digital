@@ -5,16 +5,22 @@ import { motion } from "framer-motion"
 import { Send, Loader2 } from "lucide-react"
 
 export default function Contact() {
-  const [form, setForm] = useState({ nombre: "", email: "", rubro: "", mensaje: "" })
+  const [form, setForm] = useState({ nombre: "", email: "", telefono: "", rubro: "", mensaje: "", company: "" })
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle")
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string[]>>({})
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }))
+    // Clean up specific field errors if the user starts typing again
+    if (fieldErrors[e.target.name]) {
+      setFieldErrors((prev) => ({ ...prev, [e.target.name]: [] }))
+    }
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setStatus("sending")
+    setFieldErrors({})
 
     try {
       const response = await fetch("/api/send", {
@@ -23,10 +29,16 @@ export default function Contact() {
         body: JSON.stringify(form),
       })
 
+      const data = await response.json()
+
       if (response.ok) {
         setStatus("sent")
       } else {
         setStatus("error")
+        // Catch detailed field errors from the Zod backend
+        if (data.fieldErrors) {
+          setFieldErrors(data.fieldErrors)
+        }
       }
     } catch (error) {
       console.error("Error al enviar el formulario:", error)
@@ -115,9 +127,19 @@ export default function Contact() {
               onSubmit={handleSubmit}
               className="bg-white rounded-3xl border border-border p-8 md:p-10 flex flex-col gap-6 shadow-2xl shadow-primary/5"
             >
+              {/* Honeypot Field (Spam Trap) */}
+              <input
+                type="text"
+                name="company"
+                value={form.company}
+                onChange={handleChange}
+                style={{ display: "none" }}
+                tabIndex={-1}
+                autoComplete="off"
+              />
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="flex flex-col gap-2">
-                  <label htmlFor="nombre" className="text-xs font-bold uppercase tracking-wider text-muted-foreground ml-1">
+                  <label htmlFor="nombre" className={`text-xs font-bold uppercase tracking-wider ml-1 ${fieldErrors.nombre ? "text-rose-500" : "text-muted-foreground"}`}>
                     Nombre
                   </label>
                   <input
@@ -128,12 +150,15 @@ export default function Contact() {
                     value={form.nombre}
                     onChange={handleChange}
                     placeholder="Ej: Martín García"
-                    className="w-full rounded-2xl border border-input bg-background/50 px-5 py-4 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all shadow-sm"
+                    className={`w-full rounded-2xl border bg-background/50 px-5 py-4 text-sm focus:outline-none transition-all shadow-sm ${fieldErrors.nombre ? "border-rose-500/50 focus:border-rose-500 focus:ring-1 focus:ring-rose-500" : "border-input focus:ring-2 focus:ring-primary/20"}`}
                   />
+                  {fieldErrors.nombre && (
+                    <span className="text-xs font-semibold text-rose-500 ml-1">{fieldErrors.nombre[0]}</span>
+                  )}
                 </div>
 
                 <div className="flex flex-col gap-2">
-                  <label htmlFor="email" className="text-xs font-bold uppercase tracking-wider text-muted-foreground ml-1">
+                  <label htmlFor="email" className={`text-xs font-bold uppercase tracking-wider ml-1 ${fieldErrors.email ? "text-rose-500" : "text-muted-foreground"}`}>
                     Tu Email
                   </label>
                   <input
@@ -144,35 +169,62 @@ export default function Contact() {
                     value={form.email}
                     onChange={handleChange}
                     placeholder="martin@ejemplo.com"
-                    className="w-full rounded-2xl border border-input bg-background/50 px-5 py-4 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all shadow-sm"
+                    className={`w-full rounded-2xl border bg-background/50 px-5 py-4 text-sm focus:outline-none transition-all shadow-sm ${fieldErrors.email ? "border-rose-500/50 focus:border-rose-500 focus:ring-1 focus:ring-rose-500" : "border-input focus:ring-2 focus:ring-primary/20"}`}
                   />
+                  {fieldErrors.email && (
+                    <span className="text-xs font-semibold text-rose-500 ml-1">{fieldErrors.email[0]}</span>
+                  )}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="flex flex-col gap-2">
+                  <label htmlFor="telefono" className={`text-xs font-bold uppercase tracking-wider ml-1 ${fieldErrors.telefono ? "text-rose-500" : "text-muted-foreground"}`}>
+                    Teléfono
+                  </label>
+                  <input
+                    id="telefono"
+                    name="telefono"
+                    type="tel"
+                    required
+                    value={form.telefono}
+                    onChange={handleChange}
+                    placeholder="Ej: +54 9 11 1234-5678"
+                    className={`w-full rounded-2xl border bg-background/50 px-5 py-4 text-sm focus:outline-none transition-all shadow-sm ${fieldErrors.telefono ? "border-rose-500/50 focus:border-rose-500 focus:ring-1 focus:ring-rose-500" : "border-input focus:ring-2 focus:ring-primary/20"}`}
+                  />
+                  {fieldErrors.telefono && (
+                    <span className="text-xs font-semibold text-rose-500 ml-1">{fieldErrors.telefono[0]}</span>
+                  )}
+                </div>
+
+                <div className="flex flex-col gap-2">
+                  <label htmlFor="rubro" className={`text-xs font-bold uppercase tracking-wider ml-1 ${fieldErrors.rubro ? "text-rose-500" : "text-muted-foreground"}`}>
+                    Rubro del Proyecto
+                  </label>
+                  <select
+                    id="rubro"
+                    name="rubro"
+                    required
+                    value={form.rubro}
+                    onChange={handleChange}
+                    className={`w-full rounded-2xl border bg-background/50 px-5 py-4 text-sm focus:outline-none transition-all shadow-sm cursor-pointer appearance-none ${fieldErrors.rubro ? "border-rose-500/50 focus:border-rose-500 focus:ring-1 focus:ring-rose-500" : "border-input focus:ring-2 focus:ring-primary/20"}`}
+                  >
+                    <option value="" disabled>Seleccioná tu rubro</option>
+                    <option>Estudio Contable</option>
+                    <option>Consultorio / Salud</option>
+                    <option>Abogado / Estudio Jurídico</option>
+                    <option>E-commerce / Tienda Online</option>
+                    <option>Portafolio Personal</option>
+                    <option>Emprendimiento / Otro</option>
+                  </select>
+                  {fieldErrors.rubro && (
+                    <span className="text-xs font-semibold text-rose-500 ml-1">{fieldErrors.rubro[0]}</span>
+                  )}
                 </div>
               </div>
 
               <div className="flex flex-col gap-2">
-                <label htmlFor="rubro" className="text-xs font-bold uppercase tracking-wider text-muted-foreground ml-1">
-                  Rubro del Proyecto
-                </label>
-                <select
-                  id="rubro"
-                  name="rubro"
-                  required
-                  value={form.rubro}
-                  onChange={handleChange}
-                  className="w-full rounded-2xl border border-input bg-background/50 px-5 py-4 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all shadow-sm cursor-pointer appearance-none"
-                >
-                  <option value="" disabled>Seleccioná tu rubro</option>
-                  <option>Estudio Contable</option>
-                  <option>Consultorio / Salud</option>
-                  <option>Abogado / Estudio Jurídico</option>
-                  <option>E-commerce / Tienda Online</option>
-                  <option>Portafolio Personal</option>
-                  <option>Emprendimiento / Otro</option>
-                </select>
-              </div>
-
-              <div className="flex flex-col gap-2">
-                <label htmlFor="mensaje" className="text-xs font-bold uppercase tracking-wider text-muted-foreground ml-1">
+                <label htmlFor="mensaje" className={`text-xs font-bold uppercase tracking-wider ml-1 ${fieldErrors.mensaje ? "text-rose-500" : "text-muted-foreground"}`}>
                   ¿Cómo podemos ayudarte?
                 </label>
                 <textarea
@@ -183,13 +235,16 @@ export default function Contact() {
                   value={form.mensaje}
                   onChange={handleChange}
                   placeholder="Contanos tu idea o cualquier detalle..."
-                  className="w-full rounded-2xl border border-input bg-background/50 px-5 py-4 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all shadow-sm resize-none"
+                  className={`w-full rounded-2xl border bg-background/50 px-5 py-4 text-sm focus:outline-none transition-all shadow-sm resize-none ${fieldErrors.mensaje ? "border-rose-500/50 focus:border-rose-500 focus:ring-1 focus:ring-rose-500" : "border-input focus:ring-2 focus:ring-primary/20"}`}
                 />
+                {fieldErrors.mensaje && (
+                  <span className="text-xs font-semibold text-rose-500 ml-1">{fieldErrors.mensaje[0]}</span>
+                )}
               </div>
 
-              {status === "error" && (
+              {status === "error" && Object.keys(fieldErrors).length === 0 && (
                 <p className="text-xs text-rose-500 font-semibold bg-rose-50 p-3 rounded-lg border border-rose-100 italic">
-                  ⚠ Hubo un error al enviar. Por favor contactanos por WhatsApp para una respuesta inmediata.
+                  ⚠ Hubo un error de conexión. Por favor contactanos por WhatsApp para una respuesta inmediata.
                 </p>
               )}
 
