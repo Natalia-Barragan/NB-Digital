@@ -53,7 +53,7 @@ const projects = [
   {
     title: "Yhabiaunavez",
     description:
-      "Desarrollo de una aplicación de e-commerce simplificada para un emprendimiento de ropa y accesorios de bebés. Incluye gestión de carrito, selección de talles y pedidos directos vía WhatsApp para una gestión personalizada del stock y pagos.",
+      "Desarrollo de una aplicación de e-commerce para un emprendimiento de ropa y accesorios de bebés. Incluye gestión de carrito, selección de talles, integración de pasarela con Mercado Pago para cobros automáticos y redirección directa a WhatsApp para la finalización de pedidos mediante transferencia bancaria y control personalizado de stock.",
     image: "/Yhabiaunavez.png",
     tags: ["Next.js", "NestJS", "Supabase", "Tailwind CSS"],
     github: "#",
