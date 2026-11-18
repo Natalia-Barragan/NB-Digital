@@ -29,7 +29,8 @@ const projects: Project[] = [
     title: "Coni Perez - Tatuadora",
     description:
       "Desarrollé una aplicación para una tatuadora que incluye un formulario de reservas con notificaciones por mail y un panel de administración (CRM) para gestionar turnos, fotos y estados de citas.",
-    image: "/coni-perez-tattoo.png",
+    image: "/Coni.png",
+    imageFit: "object-fill",
     tags: ["Next.js", "React", "Tailwind CSS", "Supabase", "Resend"],
     demo: "https://coni-perez.nbdigital.lat/",
     rotation: 7,
@@ -58,6 +59,7 @@ const projects: Project[] = [
     description:
       "Desarrollé una web que resolvió su necesidad real de formalizar su imagen, brindando un espacio confiable para sus clientes.",
     image: "/vgs-estudio-contable.png",
+    imageFit: "object-contain bg-[#fdfcf9]",
     tags: ["Next.js", "React", "Tailwind CSS", "Resend", "Google Calendar"],
     demo: "https://estudiovgs.nbdigital.lat/",
     rotation: -8,
@@ -83,15 +85,15 @@ const projects: Project[] = [
   {
     title: "CODI Psicológico",
     description:
-      "CODI Psicológico — Sistema de gestión para consultorios de psicología, construido a medida para una amiga psicóloga que tenía toda su información dispersa en carpetas y planillas sueltas. Centraliza pacientes, agenda de turnos, notas clínicas (encriptadas) y cobros —incluyendo casos particulares como obras sociales, copagos y sesiones prepagas— en una sola app web. Suma un bot de Telegram o whatsapp que permite registrar pagos, notas de sesión y consultas por chat, sin necesidad de abrir la aplicación.",
+      "Desarrollo de Sistema de gestión para consultorios de psicología, construido a medida para una amiga psicóloga que tenía toda su información dispersa en carpetas y planillas sueltas. Centraliza pacientes, agenda de turnos, notas clínicas (encriptadas) y cobros —incluyendo casos particulares como obras sociales, copagos y sesiones prepagas— en una sola app web. Suma un bot de Telegram o whatsapp que permite registrar pagos, notas de sesión y consultas por chat, sin necesidad de abrir la aplicación.",
     image: "/CODI.png",
-    tags: ["Next.js", "NestJS", "Supabase", "autenticación JWT", "Tailwind CSS", "encriptación AES-256 para datos sensibles", "bot con Telegram"],
+    tags: ["Next.js", "NestJS", "Supabase", "Tailwind CSS", "JWT", "AES-256", "Telegram Bot"],
     video: "/demoentera.mp4",
     rotation: 5,
   },
 ]
 
-const META_H = 96 // alto reservado para título + tags debajo de cada imagen
+const META_H = 104 // alto reservado para título + tags debajo de cada imagen
 
 export default function Portfolio() {
   const sectionRef = useRef<HTMLElement>(null)
@@ -246,12 +248,12 @@ export default function Portfolio() {
                 data-r={p.rotation}
                 className="group absolute left-1/2 top-0 w-full overflow-hidden rounded-xl border-2 border-white bg-card shadow-[0_22px_55px_rgba(15,23,42,0.25)] [will-change:transform]"
               >
-                <div className="relative w-full overflow-hidden bg-slate-100" style={{ height: "calc(100% - 96px)" }}>
+                <div className="relative w-full overflow-hidden bg-slate-100" style={{ height: `calc(100% - ${META_H}px)` }}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={p.image}
                     alt={p.title}
-                    className={`h-full w-full object-cover transition-transform duration-700 group-hover:scale-110 ${p.imageFit || "object-top"}`}
+                    className={`h-full w-full transition-transform duration-700 group-hover:scale-110 ${p.imageFit || "object-cover object-top"}`}
                   />
                   <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-primary/20 opacity-0 backdrop-blur-sm transition-opacity group-hover:opacity-100">
                     {p.video ? (
@@ -268,8 +270,8 @@ export default function Portfolio() {
                     </button>
                   </div>
                 </div>
-                <div className="flex flex-col justify-center gap-1.5 px-4 py-2" style={{ height: "96px" }}>
-                  <span className="truncate text-base font-semibold text-foreground">{p.title}</span>
+                <div className="flex flex-col justify-center gap-1.5 px-4 py-2" style={{ height: `${META_H}px` }}>
+                  <span className="shrink-0 truncate text-base font-semibold text-foreground">{p.title}</span>
                   <div className="flex flex-wrap gap-1">
                     {p.tags.map((t) => (
                       <span
